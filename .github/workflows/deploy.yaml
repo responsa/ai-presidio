@@ -1,0 +1,39 @@
+name: Sync Fork
+
+on:
+  push: # on push to main
+    branches:
+      - main
+  workflow_dispatch: # on button click
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.prepare.outputs.name }}
+      version: ${{ steps.prepare.outputs.version }}
+      lastTag: ${{ steps.prepare.outputs.lastTag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Prepare
+        id: prepare
+        run: |
+          echo "name=presidio-analyzer" >> $GITHUB_OUTPUT
+          echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: prepare
+    uses: responsa/actions/.github/workflows/deploy-docker-v2.yml@main
+    with:
+      sha: ${{ github.sha }}
+      name: ${{ needs.prepare.outputs.name }}
+      version: ${{ needs.prepare.outputs.version }}
+      folder: presidio-analyzer
+      dockerfile: Dockerfile.responsa
+    secrets:
+      RESPONSA_REGISTRY_USERNAME: ${{ secrets.RESPONSA_REGISTRY_USERNAME }}
+      RESPONSA_REGISTRY_PASSWORD: ${{ secrets.RESPONSA_REGISTRY_PASSWORD }}
+      RESPONSA_NPM_HOSTNAME: ${{ secrets.RESPONSA_NPM_HOSTNAME }}
+      RESPONSA_NPM_TOKEN: ${{ secrets.RESPONSA_NPM_TOKEN }}
+      RESPONSA_NPM_SCOPE: ${{ secrets.RESPONSA_NPM_SCOPE }}
