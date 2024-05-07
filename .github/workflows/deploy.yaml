@@ -9,7 +9,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       name: ${{ steps.prepare.outputs.name }}
       version: ${{ steps.prepare.outputs.version }}
