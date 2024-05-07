@@ -4,6 +4,7 @@ on:
   push: # on push to main
     branches:
       - main
+    paths: presidio-analyzer
   workflow_dispatch: # on button click
 
 jobs:
