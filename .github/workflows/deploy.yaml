@@ -32,6 +32,7 @@ jobs:
       version: ${{ needs.prepare.outputs.version }}
       folder: presidio-analyzer
       dockerfile: Dockerfile.responsa
+      project: wrap
     secrets:
       RESPONSA_REGISTRY_USERNAME: ${{ secrets.RESPONSA_REGISTRY_USERNAME }}
       RESPONSA_REGISTRY_PASSWORD: ${{ secrets.RESPONSA_REGISTRY_PASSWORD }}
