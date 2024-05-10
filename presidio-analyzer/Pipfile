@@ -14,7 +14,7 @@ typing-extensions = "*"
 spacy-huggingface-pipelines = "*"
 azure-ai-textanalytics = "*"
 azure-core = "*"
-# stanza = "*"
+stanza = "*"
 # spacy-stanza = "*"
 
 [dev-packages]
