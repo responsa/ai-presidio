@@ -10,6 +10,7 @@ from flask import Flask, request, jsonify, Response
 from werkzeug.exceptions import HTTPException
 
 from presidio_analyzer import AnalyzerEngine, AnalyzerEngineProvider, AnalyzerRequest
+from presidio_analyzer.azure_ai_remote_recognizer import AzureAiRemoteRecognizer
 
 DEFAULT_PORT = "3000"
 
@@ -135,5 +136,10 @@ class Server:
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", DEFAULT_PORT))
-    server = Server()
+    server = Server()    
+    rec = AzureAiRemoteRecognizer(
+        pii_identification_url = os.environ.get("AZURE_AI_ENDPOINT"), 
+        api_key = os.environ.get("AZURE_AI_KEY"),
+    )
+    server.engine.registry.add_recognizer(rec)
     server.app.run(host="0.0.0.0", port=port)
